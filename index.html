@@ -1,95 +1,59 @@
 <!DOCTYPE html>
-<html lang="ja" data-theme="light">
+<html lang="ja">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ハイテンポ英単語クイズ - Section 11</title>
+    <title>ハイテンポ英単語クイズ - Target 1900 Section 11</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* ==================== テーマ別カラー定義 ==================== */
-        :root,
-        [data-theme="light"] {
-            --bg-main: #F6F5F0;
+        /* ==================== テーマ変数（ライト / セピア） ==================== */
+        :root {
+            --bg-main: #F7F6F2;
             --bg-card: #FFFFFF;
             --bg-subtle: #EFEDE6;
-            --bg-hover: #F2F0E8;
-            --text-main: #2B2E34;
-            --text-sub: #646B75;
-            --border-color: #E2DFD5;
-            --border-strong: #C9C5B8;
-            --accent-color: #B45309;      /* 落ち着いたアンバー */
-            --accent-bg: #FEF3C7;
-            --primary-btn-bg: #2B2E34;
-            --primary-btn-text: #FFFFFF;
-            --primary-btn-hover: #3F444D;
-            --mark-bg: #FEF08A;           /* ソフトなイエローマーカー */
-            --mark-text: #1F2937;
+            --text-main: #1F2937;
+            --text-sub: #4B5563;
+            --text-muted: #6B7280;
+            --border-color: #DCD9CE;
+            --border-strong: #C5C1B4;
+            --accent-color: #2563EB;
+            --accent-hover: #1D4ED8;
+            --marker-bg: #FEF08A;
+            --marker-text: #1F2937;
             --correct-bg: #DCFCE7;
-            --correct-border: #15803D;
+            --correct-border: #16A34A;
             --correct-text: #14532D;
             --wrong-bg: #FEE2E2;
-            --wrong-border: #B91C1C;
+            --wrong-border: #DC2626;
             --wrong-text: #7F1D1D;
             --record-bg: #FEF9C3;
-            --record-border: #D97706;
-            --shadow-card: 0 2px 10px rgba(43, 46, 52, 0.05);
+            --record-border: #CA8A04;
         }
 
         [data-theme="sepia"] {
             --bg-main: #F4ECD8;
-            --bg-card: #FCF8EE;
+            --bg-card: #FAF5E8;
             --bg-subtle: #EAE0C8;
-            --bg-hover: #EFE6D0;
-            --text-main: #3B3126;
-            --text-sub: #736452;
-            --border-color: #DFD3B8;
-            --border-strong: #C4B494;
-            --accent-color: #9A3412;
-            --accent-bg: #FDE68A;
-            --primary-btn-bg: #4A3B2C;
-            --primary-btn-text: #FCF8EE;
-            --primary-btn-hover: #5E4B38;
-            --mark-bg: #FDE047;
-            --mark-text: #2C2219;
-            --correct-bg: #DCFCE7;
+            --text-main: #3E2F1C;
+            --text-sub: #5C4932;
+            --text-muted: #7C684E;
+            --border-color: #D8C9AA;
+            --border-strong: #C2AF88;
+            --accent-color: #B45309;
+            --accent-hover: #92400E;
+            --marker-bg: #FEF08A;
+            --marker-text: #3E2F1C;
+            --correct-bg: #D9F2DF;
             --correct-border: #15803D;
             --correct-text: #14532D;
-            --wrong-bg: #FEE2E2;
+            --wrong-bg: #F9D8D8;
             --wrong-border: #B91C1C;
             --wrong-text: #7F1D1D;
-            --record-bg: #FEF08A;
+            --record-bg: #FDE68A;
             --record-border: #B45309;
-            --shadow-card: 0 2px 10px rgba(59, 49, 38, 0.06);
         }
 
-        [data-theme="dark"] {
-            --bg-main: #1E2028;
-            --bg-card: #282B36;
-            --bg-subtle: #313543;
-            --bg-hover: #363A4A;
-            --text-main: #E4E6EC;
-            --text-sub: #9CA3B2;
-            --border-color: #3A3E4D;
-            --border-strong: #555B70;
-            --accent-color: #FBBF24;
-            --accent-bg: #423519;
-            --primary-btn-bg: #E4E6EC;
-            --primary-btn-text: #1E2028;
-            --primary-btn-hover: #FFFFFF;
-            --mark-bg: #FEF08A;
-            --mark-text: #1F2937;
-            --correct-bg: #143624;
-            --correct-border: #22C55E;
-            --correct-text: #DCFCE7;
-            --wrong-bg: #3F191C;
-            --wrong-border: #EF4444;
-            --wrong-text: #FEE2E2;
-            --record-bg: #3D3319;
-            --record-border: #F59E0B;
-            --shadow-card: 0 4px 14px rgba(0, 0, 0, 0.25);
-        }
-
-        /* ==================== ベーススタイル ==================== */
+        /* ==================== 基本スタイル ==================== */
         body {
             background-color: var(--bg-main);
             color: var(--text-main);
@@ -97,63 +61,48 @@
             touch-action: manipulation;
             user-select: none;
             -webkit-tap-highlight-color: transparent;
-            transition: background-color 0.25s ease, color 0.25s ease;
+            transition: background-color 0.2s ease, color 0.2s ease;
         }
 
         .card-surface {
             background-color: var(--bg-card);
             border: 2px solid var(--border-color);
-            box-shadow: var(--shadow-card);
-            transition: background-color 0.25s ease, border-color 0.25s ease;
         }
 
-        .text-sub {
-            color: var(--text-sub);
+        .subtle-surface {
+            background-color: var(--bg-subtle);
+            border: 1px solid var(--border-color);
         }
 
-        .text-accent {
-            color: var(--accent-color);
-        }
+        .text-sub { color: var(--text-sub); }
+        .text-muted { color: var(--text-muted); }
 
         .primary-btn {
-            background-color: var(--primary-btn-bg);
-            color: var(--primary-btn-text);
-            transition: transform 0.1s ease, background-color 0.2s ease;
+            background-color: var(--text-main);
+            color: var(--bg-card);
+            transition: transform 0.1s ease, opacity 0.15s ease;
         }
-        .primary-btn:hover {
-            background-color: var(--primary-btn-hover);
-        }
-        .primary-btn:active {
-            transform: scale(0.97);
-        }
+        .primary-btn:hover { opacity: 0.92; }
+        .primary-btn:active { transform: scale(0.97); }
 
-        /* テーマ切替ボタン */
-        .theme-toggle-btn {
+        .control-btn {
             background-color: var(--bg-card);
             color: var(--text-main);
             border: 1.5px solid var(--border-strong);
-            box-shadow: var(--shadow-card);
-            transition: background-color 0.2s ease, transform 0.1s ease;
+            transition: background-color 0.15s ease, transform 0.1s ease;
         }
-        .theme-toggle-btn:hover {
-            background-color: var(--bg-hover);
-        }
-        .theme-toggle-btn:active {
-            transform: scale(0.95);
-        }
+        .control-btn:hover { background-color: var(--bg-subtle); }
+        .control-btn:active { transform: scale(0.96); }
 
         /* 選択肢ボタン */
         .choice-btn {
             background-color: var(--bg-card);
             color: var(--text-main);
-            border: 2px solid var(--border-color);
-            box-shadow: var(--shadow-card);
-            transition: transform 0.08s ease-out, background-color 0.12s ease-out, border-color 0.12s ease-out, opacity 0.15s ease;
+            border: 2px solid var(--border-strong);
+            transition: transform 0.08s ease-out, background-color 0.12s ease, border-color 0.12s ease, opacity 0.15s ease;
         }
-        .choice-btn:hover,
-        .choice-btn:focus-visible {
-            border-color: var(--border-strong);
-            background-color: var(--bg-hover);
+        .choice-btn:hover, .choice-btn:focus-visible {
+            border-color: var(--accent-color);
             outline: none;
         }
         .choice-btn:active {
@@ -166,47 +115,50 @@
             border-color: var(--correct-border) !important;
             color: var(--correct-text) !important;
         }
-        .is-correct .choice-num {
-            color: var(--correct-border) !important;
-        }
-
         .is-wrong {
             background-color: var(--wrong-bg) !important;
             border-color: var(--wrong-border) !important;
             color: var(--wrong-text) !important;
         }
-        .is-wrong .choice-num {
-            color: var(--wrong-border) !important;
-        }
-
         .dimmed {
             opacity: 0.42;
         }
 
-        /* 日本語訳のマーカー強調 */
+        /* 日本語訳のマーカー風ハイライト */
         .jp-highlight {
-            background-color: var(--mark-bg);
-            color: var(--mark-text);
+            background-color: var(--marker-bg);
+            color: var(--marker-text);
             font-weight: 800;
-            padding: 0.08em 0.3em;
-            border-radius: 0.35em;
-            box-decoration-break: clone;
-            -webkit-box-decoration-break: clone;
+            padding: 0.05em 0.28em;
+            border-radius: 0.3em;
         }
 
-        /* ランキング行 */
-        .rank-row {
-            background-color: var(--bg-subtle);
-            border: 1.5px solid transparent;
-        }
-        .rank-row-highlight {
-            background-color: var(--record-bg);
-            border: 2px solid var(--record-border);
+        /* 振り返りリスト内の正解単語ハイライト */
+        .review-ans-word {
+            color: var(--correct-text);
+            background-color: var(--correct-bg);
+            border-bottom: 2px solid var(--correct-border);
+            font-weight: 800;
+            padding: 0 0.25em;
+            border-radius: 0.25em;
         }
 
-        /* 画面遷移アニメーション */
+        /* フィルターボタン */
+        .filter-btn {
+            background-color: var(--bg-card);
+            color: var(--text-sub);
+            border: 1.5px solid var(--border-strong);
+            transition: all 0.15s ease;
+        }
+        .filter-btn.active {
+            background-color: var(--text-main);
+            color: var(--bg-card);
+            border-color: var(--text-main);
+        }
+
+        /* アニメーション */
         .fade-in {
-            animation: fadeIn 0.2s ease-out forwards;
+            animation: fadeIn 0.18s ease-out forwards;
         }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(5px); }
@@ -218,29 +170,37 @@
         }
     </style>
 </head>
-<body class="h-[100dvh] w-full flex flex-col items-center justify-center overflow-hidden relative">
+<body class="min-h-[100dvh] w-full flex flex-col items-center">
 
-    <!-- ==================== テーマ切替ボタン（右上固定） ==================== -->
-    <button id="theme-toggle-btn" type="button" aria-label="配色テーマを切り替え"
-            class="theme-toggle-btn fixed top-3 right-3 sm:top-4 sm:right-4 z-50 px-3 py-1.5 sm:px-3.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold flex items-center gap-1.5">
-        <span id="theme-icon">☀️</span>
-        <span id="theme-label">ライト</span>
-    </button>
+    <!-- ==================== 共通トップバー（音声・テーマ切替） ==================== -->
+    <header class="w-full max-w-4xl px-3 sm:px-6 pt-2.5 pb-1 flex justify-between items-center shrink-0 z-10">
+        <div class="text-xs sm:text-sm font-extrabold tracking-wider text-muted">
+            TARGET 1900 / SEC 11
+        </div>
+        <div class="flex items-center gap-2">
+            <button id="sound-toggle-btn" type="button" class="control-btn px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold flex items-center gap-1.5" aria-label="音声のオン・オフを切り替え">
+                <span id="sound-icon">🔊</span>
+                <span id="sound-label">音声 ON</span>
+            </button>
+            <button id="theme-toggle-btn" type="button" class="control-btn px-3 py-1.5 rounded-full text-xs sm:text-sm font-bold flex items-center gap-1.5" aria-label="テーマを切り替え">
+                <span id="theme-icon">☀️</span>
+                <span id="theme-label">ライト</span>
+            </button>
+        </div>
+    </header>
 
     <!-- ==================== スタート画面 ==================== -->
-    <div id="start-screen" class="w-full max-w-2xl h-full px-4 pt-12 pb-5 sm:py-8 flex flex-col items-center justify-between text-center fade-in">
-        <div class="w-full">
-            <p class="text-xs sm:text-sm font-extrabold text-accent tracking-widest mb-1">TARGET 1900 / SECTION 11</p>
-            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">英単語スピードクイズ</h1>
-            <p class="text-sm sm:text-lg mt-1.5 text-sub font-semibold">ランダム10問・タイムアタック</p>
+    <main id="start-screen" class="w-full max-w-2xl flex-grow px-4 py-3 flex flex-col items-center justify-between text-center fade-in">
+        <div class="w-full pt-2">
+            <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight leading-tight">英単語<br class="sm:hidden">スピードクイズ</h1>
+            <p class="text-sm sm:text-lg mt-1.5 text-sub font-bold">ランダム10問・タイムアタック</p>
         </div>
 
-        <!-- ランキング表示エリア -->
-        <div class="w-full card-surface rounded-2xl p-4 my-2">
+        <!-- ランキング表示エリア（スタート画面） -->
+        <div class="w-full card-surface rounded-2xl p-4 my-3 shadow-sm">
             <div class="flex justify-between items-center mb-2.5">
-                <h2 class="text-base sm:text-lg font-extrabold text-accent">🏆 TOP 3 ランキング</h2>
-                <button id="reset-ranking-start" type="button"
-                        class="text-xs px-2.5 py-1 rounded-lg border border-current text-sub hover:opacity-80 transition-opacity font-semibold">
+                <h2 class="text-base sm:text-lg font-extrabold">🏆 TOP 3 ランキング</h2>
+                <button id="reset-ranking-start" type="button" class="text-xs px-2.5 py-1 rounded-lg border border-gray-400 text-muted hover:opacity-80 transition-opacity">
                     リセット
                 </button>
             </div>
@@ -250,80 +210,84 @@
         </div>
 
         <!-- 操作ガイド -->
-        <div class="w-full text-xs sm:text-sm text-sub space-y-1 mb-2">
-            <p>選択肢：<strong style="color: var(--text-main);">タップ</strong> または <strong style="color: var(--text-main);">[1]〜[4]</strong> キー</p>
-            <p>日本語訳：<strong style="color: var(--text-main);">英文をタップ</strong> または <strong style="color: var(--text-main);">[Space]</strong> キー</p>
+        <div class="w-full subtle-surface rounded-xl px-4 py-2.5 text-xs sm:text-sm text-sub space-y-1 mb-3">
+            <p>解答：<strong>タップ</strong> または <strong>[1]〜[4]</strong> キー</p>
+            <p>日本語訳：<strong>英文をタップ</strong> または <strong>[Space]</strong> キー ／ 再読み上げ：<strong>[R]</strong> キー</p>
         </div>
 
-        <button id="start-btn" type="button"
-                class="primary-btn w-full max-w-md py-4 sm:py-5 text-xl sm:text-3xl font-extrabold rounded-2xl shadow-md mb-1">
+        <button id="start-btn" type="button" class="primary-btn w-full max-w-md py-4 text-xl sm:text-3xl font-extrabold rounded-full shadow-md mb-3">
             スタート (Enter)
         </button>
-    </div>
+    </main>
 
-    <!-- ==================== クイズ画面 ==================== -->
-    <div id="quiz-screen" class="w-full max-w-4xl h-full px-3 sm:px-6 pt-12 pb-3 sm:pt-14 sm:pb-6 flex flex-col justify-between hidden-screen">
-        <!-- ヘッダー（進捗・タイム・スコア） -->
-        <div class="flex justify-between items-center px-1 shrink-0">
+    <!-- ==================== クイズ画面（1画面完結・スクロールなし） ==================== -->
+    <main id="quiz-screen" class="w-full max-w-4xl h-[calc(100dvh-52px)] px-3 sm:px-6 pb-3 sm:pb-5 flex flex-col justify-between hidden-screen overflow-hidden">
+        <!-- 進捗・タイム・スコア -->
+        <div class="flex justify-between items-center px-1 py-1 shrink-0">
             <div id="progress-text" class="text-lg sm:text-2xl font-extrabold text-sub">Q. 1 / 10</div>
-            <div id="timer-text" class="text-xl sm:text-3xl font-mono font-extrabold text-accent">0.0秒</div>
-            <div id="score-text" class="text-lg sm:text-2xl font-extrabold">正解: 0</div>
+            <div id="timer-text" class="text-xl sm:text-3xl font-mono font-extrabold">0.0秒</div>
+            <div id="score-text" class="text-lg sm:text-2xl font-extrabold text-sub">正解: 0</div>
         </div>
 
         <!-- 問題文エリア（タップで日本語訳をトグル表示） -->
         <div id="question-area" role="button" tabindex="0" aria-label="英文エリア。タップまたはSpaceキーで日本語訳を表示"
-             class="card-surface flex-grow flex flex-col items-center justify-center my-2.5 sm:my-4 px-4 sm:px-7 py-4 rounded-2xl cursor-pointer active:scale-[0.99] transition-transform">
-            <!-- 英語例文（最初はこれだけ表示） -->
-            <div id="question-en" class="text-xl sm:text-3xl md:text-4xl font-bold text-center leading-snug sm:leading-relaxed w-full">
-                English sentence
+             class="card-surface flex-grow flex flex-col items-center justify-center my-2 sm:my-3 px-4 sm:px-8 py-4 rounded-2xl shadow-sm cursor-pointer relative overflow-y-auto">
+
+            <!-- 英文＋再読み上げボタン -->
+            <div class="w-full flex items-center justify-center gap-2 sm:gap-3">
+                <div id="question-en" class="text-xl sm:text-3xl md:text-4xl font-bold text-center leading-snug sm:leading-relaxed">
+                    English sentence
+                </div>
+                <button id="replay-speech-btn" type="button" title="英文をもう一度読み上げる (R)" aria-label="英文をもう一度読み上げる"
+                        class="control-btn shrink-0 w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-lg sm:text-xl shadow-sm">
+                    🔊
+                </button>
             </div>
 
             <!-- 日本語訳ガイド（未表示時に表示） -->
-            <div id="jp-hint-guide" class="mt-4 text-xs sm:text-sm text-sub font-semibold rounded-full px-4 py-1"
-                 style="background-color: var(--bg-subtle);">
+            <div id="jp-hint-guide" class="mt-3 sm:mt-4 text-xs sm:text-sm text-muted font-semibold subtle-surface rounded-full px-3.5 py-1">
                 タップして日本語訳を表示（Spaceキー）
             </div>
 
-            <!-- 日本語例文（タップ後に表示） -->
-            <div id="question-ja" class="hidden mt-4 pt-3.5 text-base sm:text-2xl font-bold text-center leading-relaxed w-full"
-                 style="border-top: 1.5px solid var(--border-color);">
+            <!-- 日本語例文（タップ後または不正解時に表示） -->
+            <div id="question-ja" class="hidden mt-3 sm:mt-4 pt-3 border-t border-gray-300/60 text-base sm:text-2xl font-bold text-center text-sub leading-relaxed w-full">
                 日本語の例文
             </div>
         </div>
 
-        <!-- 選択肢（スマホ1列、タブレット以上2列） -->
-        <div id="choices-container" class="grid grid-cols-1 md:grid-cols-2 gap-2.5 sm:gap-3.5 shrink-0 pb-1">
-            <!-- ボタンはJSで生成 -->
+        <!-- 選択肢（スマホは1列、タブレット以上は2列） -->
+        <div id="choices-container" class="grid grid-cols-1 md:grid-cols-2 gap-2 sm:gap-3.5 shrink-0">
+            <!-- JSで生成 -->
         </div>
-    </div>
+    </main>
 
-    <!-- ==================== 結果画面 ==================== -->
-    <div id="result-screen" class="w-full max-w-2xl h-full px-4 pt-12 pb-5 sm:py-8 flex flex-col items-center justify-between text-center hidden-screen">
-        <div class="w-full">
-            <div id="new-record-badge" class="hidden inline-block px-4 py-1 mb-2 rounded-full font-extrabold text-xs sm:text-sm tracking-wider animate-pulse"
-                 style="background-color: var(--mark-bg); color: var(--mark-text);">
+    <!-- ==================== 結果画面（スクロール対応・振り返りリスト付き） ==================== -->
+    <main id="result-screen" class="w-full max-w-3xl flex-grow px-4 py-3 pb-10 flex flex-col items-center text-center hidden-screen">
+        <!-- スコア・タイム表示 -->
+        <div class="w-full pt-1">
+            <div id="new-record-badge" class="hidden inline-block px-4 py-1 mb-2 rounded-full font-extrabold text-xs sm:text-sm tracking-wider"
+                 style="background-color: var(--record-bg); border: 1.5px solid var(--record-border); color: var(--text-main);">
                 ★ NEW RECORD! TOP 3 入り ★
             </div>
             <h2 class="text-2xl sm:text-4xl font-extrabold">結果発表</h2>
-            <div class="flex items-baseline justify-center gap-6 sm:gap-10 mt-3">
+            <div class="flex items-baseline justify-center gap-6 sm:gap-10 mt-2">
                 <div>
-                    <p class="text-xs sm:text-sm text-sub font-bold">正解数</p>
-                    <div id="final-score" class="text-4xl sm:text-6xl font-extrabold text-accent">10 / 10</div>
+                    <p class="text-xs sm:text-sm text-muted font-bold">正解数</p>
+                    <div id="final-score" class="text-4xl sm:text-6xl font-extrabold">10 / 10</div>
                 </div>
                 <div>
-                    <p class="text-xs sm:text-sm text-sub font-bold">タイム</p>
+                    <p class="text-xs sm:text-sm text-muted font-bold">タイム</p>
                     <div id="final-time" class="text-3xl sm:text-5xl font-mono font-extrabold">12.4秒</div>
                 </div>
             </div>
-            <p id="result-message" class="text-base sm:text-xl font-bold text-sub mt-2"></p>
+            <p id="result-message" class="text-base sm:text-xl font-bold text-sub mt-1.5"></p>
         </div>
 
-        <!-- ランキング表示エリア -->
-        <div class="w-full card-surface rounded-2xl p-4 my-2">
+        <!-- ランキング表示エリア（結果画面） -->
+        <div class="w-full card-surface rounded-2xl p-4 my-4 shadow-sm">
             <div class="flex justify-between items-center mb-2.5">
-                <h3 class="text-base sm:text-lg font-extrabold text-accent">🏆 TOP 3 ランキング</h3>
-                <button id="reset-ranking-result" type="button"
-                        class="text-xs px-2.5 py-1 rounded-lg border border-current text-sub hover:opacity-80 transition-opacity font-semibold">
+                <h3 class="text-base sm:text-lg font-extrabold">🏆 TOP 3 ランキング</h3>
+                <button id="reset-ranking-result" type="button" class="text-xs px-2.5 py-1 rounded-lg border border-gray-400 text-muted hover:opacity-80 transition-opacity">
                     リセット
                 </button>
             </div>
@@ -332,65 +296,80 @@
             </div>
         </div>
 
-        <button id="retry-btn" type="button"
-                class="primary-btn w-full max-w-md py-4 sm:py-5 text-xl sm:text-3xl font-extrabold rounded-2xl shadow-md mb-1">
+        <!-- リトライボタン -->
+        <button id="retry-btn" type="button" class="primary-btn w-full max-w-md py-3.5 sm:py-4 text-xl sm:text-2xl font-extrabold rounded-full shadow-md mb-6">
             もう一度 (Enter)
         </button>
-    </div>
+
+        <!-- 出題問題一覧（振り返りリスト） -->
+        <section class="w-full text-left border-t-2 pt-5" style="border-color: var(--border-color);">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 mb-4">
+                <h3 class="text-lg sm:text-xl font-extrabold">📋 出題問題一覧（振り返り）</h3>
+                <div class="flex items-center gap-2">
+                    <button id="filter-all-btn" type="button" class="filter-btn active px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold">
+                        すべて (10)
+                    </button>
+                    <button id="filter-wrong-btn" type="button" class="filter-btn px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold">
+                        間違えた問題のみ (0)
+                    </button>
+                </div>
+            </div>
+
+            <div id="review-list" class="space-y-3.5">
+                <!-- JSで問題カードを描画 -->
+            </div>
+        </section>
+    </main>
 
     <script>
-        // ==================== 出題データ（全30問） ====================
+        // ==================== 収録データ（全30問） ====================
         const ALL_QUESTIONS = [
             { en: "I will ( ) with the client about the delivery date.", ans: "negotiate", choices: ["negotiate", "navigate", "nominate", "neglect"], jp: "私が納期に関して顧客と**交渉します**。" },
-            { en: "Yesterday, I ( ) some new apps on my smartphone.", ans: "installed", choices: ["installed", "insisted", "inspired", "instructed"], jp: "昨日私はスマートフォンに新しいアプリをいくつか**インストールした**。" },
+            { en: "Yesterday, I ( ) some new apps on my smartphone.", ans: "installed", choices: ["installed", "inspired", "insisted", "instructed"], jp: "昨日私はスマートフォンに新しいアプリをいくつか**インストールした**。" },
             { en: "Loud music always ( ) me from reading.", ans: "distracts", choices: ["distracts", "attracts", "extracts", "contracts"], jp: "大音量の音楽はいつも私の気を読書から**そらす**。" },
             { en: "We were ( ) at the surprise visit of the famous actor.", ans: "astonished", choices: ["astonished", "thrilled", "abolished", "accomplished"], jp: "私たちは有名な俳優の突然の訪問に**驚いた**。" },
-            { en: "The typhoon destroyed much of the city's ( ).", ans: "infrastructure", choices: ["infrastructure", "instruction", "instrument", "architecture"], jp: "その台風は市の**インフラ**の多くを破壊した。" },
-            { en: "He faced a heavy ( ) for kidnapping.", ans: "penalty", choices: ["penalty", "plenty", "property", "poverty"], jp: "彼は誘拐に対して重い**刑罰**を科せられた。" },
-            { en: "Some aging patients with ( ) go missing when they are out alone.", ans: "dementia", choices: ["dementia", "dimension", "democracy", "departure"], jp: "**認知症**の高齢患者の中には1人で外出すると行方不明になる人がいる。" },
-            { en: "I am really ( ) to you and your family for your hospitality.", ans: "grateful", choices: ["grateful", "graceful", "great", "greedy"], jp: "私はあなたとあなたのご家族の親切なおもてなしに本当に**感謝して**います。" },
-            { en: "Tokyo spent a ( ) amount of money on moving its fish market.", ans: "tremendous", choices: ["tremendous", "brilliant", "generous", "dangerous"], jp: "東京都は魚市場を移転することに**莫大な**金額を費やした。" },
-            { en: "Suddenly, heavy rain hit the town ( ) with lightning.", ans: "simultaneously", choices: ["simultaneously", "similarly", "sincerely", "spontaneously"], jp: "突然、雷と**同時に**大雨が町を襲った。" },
-            { en: "The military ( ) the citizens of their liberty.", ans: "deprived", choices: ["deprived", "derived", "desired", "deserved"], jp: "軍隊は国民から自由を**奪った**。" },
-            { en: "Teachers have a good chance to ( ) their students' thinking ability.", ans: "foster", choices: ["foster", "flourish", "force", "flatter"], jp: "教師は生徒の考える力を**はぐくむ**よい機会を持っている。" },
-            { en: "He made an ( ) plan to climb Mont Blanc.", ans: "elaborate", choices: ["elaborate", "elevate", "eliminate", "evaluate"], jp: "彼はモンブランに登る**入念な**計画を立てた。" },
-            { en: "All logical arguments have two ( ) and a conclusion.", ans: "premises", choices: ["premises", "privileges", "promises", "practices"], jp: "論理的な主張はすべて2つの**前提**と1つの結論を備えている。" },
+            { en: "The typhoon destroyed much of the city's ( ).", ans: "infrastructure", choices: ["infrastructure", "architecture", "agriculture", "manufacture"], jp: "その台風は市の**インフラ**の多くを破壊した。" },
+            { en: "He faced a heavy ( ) for kidnapping.", ans: "penalty", choices: ["penalty", "poverty", "property", "priority"], jp: "彼は誘拐に対して重い**刑罰**を科せられた。" },
+            { en: "Some aging patients with ( ) go missing when they are out alone.", ans: "dementia", choices: ["dementia", "depression", "dimension", "departure"], jp: "**認知症**の高齢患者の中には1人で外出すると行方不明になる人がいる。" },
+            { en: "I am really ( ) to you and your family for your hospitality.", ans: "grateful", choices: ["grateful", "graceful", "faithful", "cheerful"], jp: "私はあなたとあなたのご家族の親切なおもてなしに本当に**感謝して**います。" },
+            { en: "Tokyo spent a ( ) amount of money on moving its fish market.", ans: "tremendous", choices: ["tremendous", "brilliant", "generous", "numerous"], jp: "東京都は魚市場を移転することに**莫大な**金額を費やした。" },
+            { en: "Suddenly, heavy rain hit the town ( ) with lightning.", ans: "simultaneously", choices: ["simultaneously", "spontaneously", "continuously", "immediately"], jp: "突然、雷と**同時に**大雨が町を襲った。" },
+            { en: "The military ( ) the citizens of their liberty.", ans: "deprived", choices: ["deprived", "derived", "deserved", "deceived"], jp: "軍隊は国民から自由を**奪った**。" },
+            { en: "Teachers have a good chance to ( ) their students' thinking ability.", ans: "foster", choices: ["foster", "flourish", "flatter", "fasten"], jp: "教師は生徒の考える力を**はぐくむ**よい機会を持っている。" },
+            { en: "He made an ( ) plan to climb Mont Blanc.", ans: "elaborate", choices: ["elaborate", "elevate", "eliminate", "evaporate"], jp: "彼はモンブランに登る**入念な**計画を立てた。" },
+            { en: "All logical arguments have two ( ) and a conclusion.", ans: "premises", choices: ["premises", "privileges", "promises", "prejudices"], jp: "論理的な主張はすべて2つの**前提**と1つの結論を備えている。" },
             { en: "He has a deep interest in ( ) European history.", ans: "medieval", choices: ["medieval", "moderate", "medical", "mutual"], jp: "彼は**中世**ヨーロッパ史に深い関心を抱いている。" },
             { en: "He ( ) some important facts during his research.", ans: "overlooked", choices: ["overlooked", "overcame", "overtook", "overwhelmed"], jp: "彼は研究の中でいくつかの重要な事実を**見落とした**。" },
-            { en: "The best way to relieve your ( ) is to have sufficient sleep.", ans: "fatigue", choices: ["fatigue", "figure", "failure", "feature"], jp: "**疲労**を和らげる最善の方法は十分な睡眠をとることである。" },
-            { en: "After her remark, there was an ( ) silence.", ans: "awkward", choices: ["awkward", "aware", "upward", "outward"], jp: "彼女の発言の後、**気まずい**沈黙があった。" },
-            { en: "Organic foods are produced without chemical ( ).", ans: "pesticides", choices: ["pesticides", "parasites", "perspectives", "procedures"], jp: "有機食品は化学**殺虫剤**を使わずに作られる。" },
-            { en: "The actress described her ( ) relationship with her husband.", ans: "intimate", choices: ["intimate", "inferior", "imitate", "infinite"], jp: "その女優は夫との**親密な**関係について述べた。" },
-            { en: "The children were able to ( ) the new ideas from the lesson.", ans: "grasp", choices: ["grasp", "gasp", "graph", "grant"], jp: "子供たちはその課に出てきた新しい考えを**理解す**ることができた。" },
+            { en: "The best way to relieve your ( ) is to have sufficient sleep.", ans: "fatigue", choices: ["fatigue", "figure", "failure", "fortune"], jp: "**疲労**を和らげる最善の方法は十分な睡眠をとることである。" },
+            { en: "After her remark, there was an ( ) silence.", ans: "awkward", choices: ["awkward", "outward", "onward", "upward"], jp: "彼女の発言の後、**気まずい**沈黙があった。" },
+            { en: "Organic foods are produced without chemical ( ).", ans: "pesticides", choices: ["pesticides", "parasites", "perspectives", "percentages"], jp: "有機食品は化学**殺虫剤**を使わずに作られる。" },
+            { en: "The actress described her ( ) relationship with her husband.", ans: "intimate", choices: ["intimate", "inferior", "infinite", "initial"], jp: "その女優は夫との**親密な**関係について述べた。" },
+            { en: "The children were able to ( ) the new ideas from the lesson.", ans: "grasp", choices: ["grasp", "gasp", "grant", "gaze"], jp: "子供たちはその課に出てきた新しい考えを**理解す**ることができた。" },
             { en: "The counselor taught me some ways to ( ) anxiety.", ans: "diminish", choices: ["diminish", "distinguish", "dismiss", "distribute"], jp: "カウンセラーは私に不安を**減らす**ためのいくつかの方法を教えてくれた。" },
             { en: "Electron microscopes allow us to investigate organic ( ).", ans: "molecules", choices: ["molecules", "muscles", "miracles", "manuals"], jp: "電子顕微鏡は私たちが有機**分子**を調べるのを可能にする。" },
             { en: "After receiving a ( ) from his teacher, he smiled back.", ans: "compliment", choices: ["compliment", "complement", "complaint", "component"], jp: "先生から**賛辞**を受けた後、彼はほほえみを返した。" },
-            { en: "Children can walk around in the ( ) end of the pool.", ans: "shallow", choices: ["shallow", "shadow", "swallow", "sorrow"], jp: "子供たちはプールの**浅い**ほうの端で歩き回ることができる。" },
-            { en: "Tax was ( ) from the price.", ans: "excluded", choices: ["excluded", "included", "concluded", "exploded"], jp: "税金は価格から**除外され**ていた。" },
-            { en: "I ( ) the reviews that said the movie was good.", ans: "disputed", choices: ["disputed", "distributed", "disposed", "displayed"], jp: "私はその映画がすぐれていると言っている批評に**異議を唱えた**。" },
-            { en: "The village was severely damaged by heavy rains and ( ) floods.", ans: "subsequent", choices: ["subsequent", "sufficient", "substantial", "subtle"], jp: "村は豪雨と**その後の**洪水によって大きな損害を受けた。" },
-            { en: "Using your creative ( ) might help you solve the problem.", ans: "faculties", choices: ["faculties", "facilities", "factors", "features"], jp: "創造**力**を使うことはあなたがその問題を解決する助けになるかもしれない。" },
-            { en: "A trial by ( ) is a standard practice in America.", ans: "jury", choices: ["jury", "judge", "journey", "justice"], jp: "アメリカでは**陪審**による裁判が標準的な慣習である。" }
+            { en: "Children can walk around in the ( ) end of the pool.", ans: "shallow", choices: ["shallow", "shadow", "hollow", "narrow"], jp: "子供たちはプールの**浅い**ほうの端で歩き回ることができる。" },
+            { en: "Tax was ( ) from the price.", ans: "excluded", choices: ["excluded", "included", "concluded", "excused"], jp: "税金は価格から**除外され**ていた。" },
+            { en: "I ( ) the reviews that said the movie was good.", ans: "disputed", choices: ["disputed", "distributed", "disposed", "disguised"], jp: "私はその映画がすぐれていると言っている批評に**異議を唱えた**。" },
+            { en: "The village was severely damaged by heavy rains and ( ) floods.", ans: "subsequent", choices: ["subsequent", "sufficient", "substantial", "frequent"], jp: "村は豪雨と**その後の**洪水によって大きな損害を受けた。" },
+            { en: "Using your creative ( ) might help you solve the problem.", ans: "faculties", choices: ["faculties", "facilities", "difficulties", "qualities"], jp: "創造**力**を使うことはあなたがその問題を解決する助けになるかもしれない。" },
+            { en: "A trial by ( ) is a standard practice in America.", ans: "jury", choices: ["jury", "judge", "journey", "injury"], jp: "アメリカでは**陪審**による裁判が標準的な慣習である。" }
         ];
 
         // ==================== 定数・状態管理 ====================
         const QUESTIONS_PER_GAME = 10;
-        const RANKING_KEY = 'target1900_sec11_top3_ranking_v1';
+        const RANKING_KEY = 'target1900_sec11_top3_ranking_v2';
         const THEME_KEY = 'target1900_sec11_theme_v1';
+        const SOUND_KEY = 'target1900_sec11_sound_v1';
 
-        const THEMES = [
-            { id: 'light', icon: '☀️', label: 'ライト' },
-            { id: 'sepia', icon: '📖', label: 'セピア' },
-            { id: 'dark',  icon: '🌙', label: 'ダーク' }
-        ];
-
-        let currentThemeIndex = 0;
         let currentQuestions = [];
         let currentQuestionIndex = 0;
         let score = 0;
         let isAnswering = false;
         let currentChoices = [];
         let isJapaneseVisible = false;
+        let answerHistory = []; // 振り返り用の解答履歴
+        let reviewFilter = 'all'; // 'all' | 'wrong'
 
         // タイマー管理
         let startTime = 0;
@@ -400,6 +379,13 @@
         // リセットボタン2段階確認用
         const resetConfirmTimers = {};
 
+        // 設定状態（テーマ・音声）
+        let currentTheme = 'light';
+        let isSoundEnabled = true;
+
+        // Web Audio API コンテキスト
+        let audioCtx = null;
+
         // ==================== DOM要素 ====================
         const screens = {
             start: document.getElementById('start-screen'),
@@ -408,7 +394,10 @@
         };
 
         const elems = {
-            themeBtn: document.getElementById('theme-toggle-btn'),
+            soundToggleBtn: document.getElementById('sound-toggle-btn'),
+            soundIcon: document.getElementById('sound-icon'),
+            soundLabel: document.getElementById('sound-label'),
+            themeToggleBtn: document.getElementById('theme-toggle-btn'),
             themeIcon: document.getElementById('theme-icon'),
             themeLabel: document.getElementById('theme-label'),
             progress: document.getElementById('progress-text'),
@@ -416,6 +405,7 @@
             score: document.getElementById('score-text'),
             questionArea: document.getElementById('question-area'),
             questionEn: document.getElementById('question-en'),
+            replaySpeechBtn: document.getElementById('replay-speech-btn'),
             jpHintGuide: document.getElementById('jp-hint-guide'),
             questionJa: document.getElementById('question-ja'),
             choices: document.getElementById('choices-container'),
@@ -424,31 +414,143 @@
             resultMessage: document.getElementById('result-message'),
             newRecordBadge: document.getElementById('new-record-badge'),
             startRankingList: document.getElementById('start-ranking-list'),
-            resultRankingList: document.getElementById('result-ranking-list')
+            resultRankingList: document.getElementById('result-ranking-list'),
+            filterAllBtn: document.getElementById('filter-all-btn'),
+            filterWrongBtn: document.getElementById('filter-wrong-btn'),
+            reviewList: document.getElementById('review-list')
         };
 
-        // ==================== テーマ管理 (localStorage) ====================
-        function applyTheme(index) {
-            currentThemeIndex = index % THEMES.length;
-            const theme = THEMES[currentThemeIndex];
-            document.documentElement.setAttribute('data-theme', theme.id);
-            elems.themeIcon.textContent = theme.icon;
-            elems.themeLabel.textContent = theme.label;
+        // ==================== テーマ・音声設定の保存と復元 ====================
+        function applyTheme(theme) {
+            currentTheme = theme;
+            if (theme === 'sepia') {
+                document.documentElement.setAttribute('data-theme', 'sepia');
+                elems.themeIcon.textContent = '📜';
+                elems.themeLabel.textContent = 'セピア';
+            } else {
+                document.documentElement.removeAttribute('data-theme');
+                elems.themeIcon.textContent = '☀️';
+                elems.themeLabel.textContent = 'ライト';
+            }
+            try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+        }
+
+        function applySoundSetting(enabled) {
+            isSoundEnabled = enabled;
+            if (enabled) {
+                elems.soundIcon.textContent = '🔊';
+                elems.soundLabel.textContent = '音声 ON';
+            } else {
+                elems.soundIcon.textContent = '🔇';
+                elems.soundLabel.textContent = '音声 OFF';
+                stopSpeech();
+            }
+            try { localStorage.setItem(SOUND_KEY, enabled ? 'on' : 'off'); } catch (e) {}
+        }
+
+        function initSettings() {
             try {
-                localStorage.setItem(THEME_KEY, theme.id);
+                const savedTheme = localStorage.getItem(THEME_KEY);
+                applyTheme(savedTheme === 'sepia' ? 'sepia' : 'light');
+
+                const savedSound = localStorage.getItem(SOUND_KEY);
+                applySoundSetting(savedSound !== 'off');
             } catch (e) {
-                // ストレージ制限時は無視
+                applyTheme('light');
+                applySoundSetting(true);
             }
         }
 
-        function initTheme() {
+        // ==================== Web Audio API（ピンポン効果音） ====================
+        function initAudioContext() {
             try {
-                const saved = localStorage.getItem(THEME_KEY);
-                const foundIndex = THEMES.findIndex(t => t.id === saved);
-                applyTheme(foundIndex >= 0 ? foundIndex : 0);
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (!AudioContextClass) return;
+                if (!audioCtx) {
+                    audioCtx = new AudioContextClass();
+                }
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
             } catch (e) {
-                applyTheme(0);
+                // 非対応環境では無視
             }
+        }
+
+        // 正解時の明るく澄んだ「ピンポン♪」（B5 -> G5）
+        function playPinPonSound() {
+            if (!isSoundEnabled) return;
+            try {
+                initAudioContext();
+                if (!audioCtx) return;
+
+                const now = audioCtx.currentTime;
+
+                // 1音目：ピン (B5: 987.77 Hz)
+                playChimeTone(987.77, now, 0.16, 0.22);
+                // 2音目：ポン (G5: 783.99 Hz)
+                playChimeTone(783.99, now + 0.13, 0.42, 0.25);
+            } catch (e) {
+                // 再生失敗時は無視
+            }
+        }
+
+        function playChimeTone(freq, startTime, duration, volume) {
+            const osc = audioCtx.createOscillator();
+            const gain = audioCtx.createGain();
+
+            osc.type = 'sine';
+            osc.frequency.setValueAtTime(freq, startTime);
+
+            // 柔らかいアタックと自然な減衰
+            gain.gain.setValueAtTime(0.001, startTime);
+            gain.gain.linearRampToValueAtTime(volume, startTime + 0.015);
+            gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+
+            osc.connect(gain);
+            gain.connect(audioCtx.destination);
+
+            osc.start(startTime);
+            osc.stop(startTime + duration + 0.02);
+        }
+
+        // ==================== Web Speech API（英文読み上げ） ====================
+        function initSpeechSynthesis() {
+            // iOS Safari 向けにユーザー操作起点で空発話を行いロックを解除
+            if (!('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel();
+                const dummy = new SpeechSynthesisUtterance('');
+                dummy.volume = 0;
+                window.speechSynthesis.speak(dummy);
+            } catch (e) {}
+        }
+
+        function stopSpeech() {
+            if ('speechSynthesis' in window) {
+                try { window.speechSynthesis.cancel(); } catch (e) {}
+            }
+        }
+
+        function speakEnglish(text) {
+            if (!isSoundEnabled) return;
+            if (!('speechSynthesis' in window)) return;
+            try {
+                window.speechSynthesis.cancel();
+                // 空欄 ( ) を "blank" として読み上げる
+                const spokenText = text.replace(/\(\s*\)/g, 'blank');
+                const utterance = new SpeechSynthesisUtterance(spokenText);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.98;
+                utterance.pitch = 1.0;
+
+                // 英語音声が取得できれば優先設定
+                const voices = window.speechSynthesis.getVoices();
+                const enVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
+                if (enVoice) utterance.voice = enVoice;
+
+                window.speechSynthesis.speak(utterance);
+            } catch (e) {}
         }
 
         // ==================== ユーティリティ ====================
@@ -465,15 +567,24 @@
             return jpText.replace(/\*\*(.*?)\*\*/g, '<span class="jp-highlight">$1</span>');
         }
 
+        function formatFilledEnglish(enText, ansWord) {
+            return enText.replace(/\(\s*\)/, `<span class="review-ans-word">${ansWord}</span>`);
+        }
+
+        function getFullEnglishText(enText, ansWord) {
+            return enText.replace(/\(\s*\)/, ansWord);
+        }
+
         function showScreen(screenName) {
             Object.values(screens).forEach(s => s.classList.add('hidden-screen'));
             screens[screenName].classList.remove('hidden-screen');
             screens[screenName].classList.remove('fade-in');
             void screens[screenName].offsetWidth;
             screens[screenName].classList.add('fade-in');
+            window.scrollTo({ top: 0, behavior: 'instant' });
         }
 
-        // ==================== ランキング機能 ====================
+        // ==================== ランキング機能 (localStorage) ====================
         function loadRanking() {
             try {
                 const raw = localStorage.getItem(RANKING_KEY);
@@ -515,7 +626,7 @@
             const medals = ['🥇 1位', '🥈 2位', '🥉 3位'];
 
             if (ranking.length === 0) {
-                containerEl.innerHTML = `<p class="text-center text-sub py-3 text-sm">まだ記録がありません</p>`;
+                containerEl.innerHTML = `<p class="text-center text-muted py-2.5 text-sm">まだ記録がありません</p>`;
                 return;
             }
 
@@ -523,20 +634,22 @@
                 const item = ranking[idx];
                 if (!item) {
                     return `
-                        <div class="rank-row flex justify-between items-center px-3 py-1.5 rounded-xl text-sub opacity-60">
+                        <div class="flex justify-between items-center px-3 py-1.5 rounded-xl subtle-surface opacity-50">
                             <span class="font-bold">${medals[idx]}</span>
                             <span>---</span>
                         </div>
                     `;
                 }
                 const isHighlight = highlightId !== null && item.id === highlightId;
-                const rowClass = isHighlight ? 'rank-row-highlight' : 'rank-row';
+                const styleAttr = isHighlight
+                    ? 'background-color: var(--record-bg); border: 2px solid var(--record-border);'
+                    : 'background-color: var(--bg-subtle); border: 1px solid var(--border-color);';
 
                 return `
-                    <div class="${rowClass} flex justify-between items-center px-3 py-1.5 rounded-xl">
-                        <span class="font-bold ${isHighlight ? 'text-accent' : ''}">${medals[idx]}</span>
+                    <div class="flex justify-between items-center px-3 py-1.5 rounded-xl" style="${styleAttr}">
+                        <span class="font-extrabold">${medals[idx]}</span>
                         <div class="flex items-center gap-4 font-mono">
-                            <span class="font-extrabold text-accent">${item.score} / ${QUESTIONS_PER_GAME}</span>
+                            <span class="font-extrabold">${item.score} / ${QUESTIONS_PER_GAME}</span>
                             <span class="font-bold w-16 text-right">${item.time.toFixed(1)}秒</span>
                         </div>
                     </div>
@@ -544,6 +657,7 @@
             }).join('');
         }
 
+        // confirm()を使わない2段階リセットボタン
         function handleResetClick(btnEl) {
             const btnId = btnEl.id;
             if (btnEl.dataset.confirming === 'true') {
@@ -560,8 +674,8 @@
             } else {
                 btnEl.dataset.confirming = 'true';
                 btnEl.textContent = '本当に消す？';
-                btnEl.style.backgroundColor = 'var(--wrong-bg)';
-                btnEl.style.color = 'var(--wrong-text)';
+                btnEl.style.backgroundColor = 'var(--wrong-border)';
+                btnEl.style.color = '#FFFFFF';
                 btnEl.style.borderColor = 'var(--wrong-border)';
 
                 resetConfirmTimers[btnId] = setTimeout(() => {
@@ -617,9 +731,15 @@
 
         // ==================== ゲーム進行ロジック ====================
         function startGame() {
+            // iOS Safari 対応：ユーザー操作タイミングで AudioContext と SpeechSynthesis を初期化
+            initAudioContext();
+            initSpeechSynthesis();
+
             currentQuestions = shuffleArray(ALL_QUESTIONS).slice(0, QUESTIONS_PER_GAME);
             currentQuestionIndex = 0;
             score = 0;
+            answerHistory = [];
+            reviewFilter = 'all';
 
             showScreen('quiz');
             loadQuestion();
@@ -630,27 +750,33 @@
             isAnswering = false;
             const currentQ = currentQuestions[currentQuestionIndex];
 
+            // ヘッダー更新
             elems.progress.textContent = `Q. ${currentQuestionIndex + 1} / ${QUESTIONS_PER_GAME}`;
             elems.score.textContent = `正解: ${score}`;
 
+            // 問題文更新（最初は英文のみ表示し、日本語訳は隠す）
             elems.questionEn.textContent = currentQ.en;
             elems.questionJa.innerHTML = formatJapanese(currentQ.jp);
             setJapaneseVisibility(false);
 
+            // 選択肢をシャッフルして描画
             currentChoices = shuffleArray(currentQ.choices);
             elems.choices.innerHTML = '';
 
             currentChoices.forEach((choiceWord, index) => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = "choice-btn w-full text-left px-4 py-3.5 sm:px-6 sm:py-5 rounded-2xl flex items-center";
+                btn.className = "choice-btn w-full text-left px-4 py-3 sm:px-5 sm:py-4 rounded-2xl flex items-center shadow-sm";
                 btn.innerHTML = `
-                    <span class="choice-num text-lg sm:text-2xl font-extrabold text-sub mr-4 w-7 shrink-0 text-center">${index + 1}</span>
-                    <span class="text-xl sm:text-3xl font-bold break-all">${choiceWord}</span>
+                    <span class="text-lg sm:text-2xl font-extrabold text-muted mr-3.5 w-6 shrink-0 text-center">${index + 1}</span>
+                    <span class="text-xl sm:text-2xl md:text-3xl font-bold break-all">${choiceWord}</span>
                 `;
                 btn.addEventListener('click', () => handleAnswer(index));
                 elems.choices.appendChild(btn);
             });
+
+            // 出題と同時に英文を自動読み上げ
+            speakEnglish(currentQ.en);
         }
 
         function handleAnswer(selectedIndex) {
@@ -659,14 +785,31 @@
 
             const currentQ = currentQuestions[currentQuestionIndex];
             const buttons = elems.choices.children;
-            const isCorrect = currentChoices[selectedIndex] === currentQ.ans;
+            const selectedWord = currentChoices[selectedIndex];
+            const isCorrect = selectedWord === currentQ.ans;
 
-            if (isCorrect) score++;
+            // 解答履歴を保存（振り返りリスト用）
+            answerHistory.push({
+                questionNumber: currentQuestionIndex + 1,
+                en: currentQ.en,
+                jp: currentQ.jp,
+                ans: currentQ.ans,
+                choices: [...currentChoices],
+                selectedWord: selectedWord,
+                isCorrect: isCorrect
+            });
 
+            if (isCorrect) {
+                score++;
+                playPinPonSound();
+            }
+
+            // 10問目解答完了時点でタイマーを即座に停止
             if (currentQuestionIndex === QUESTIONS_PER_GAME - 1) {
                 stopTimer();
             }
 
+            // 視覚フィードバック
             for (let i = 0; i < buttons.length; i++) {
                 if (currentChoices[i] === currentQ.ans) {
                     buttons[i].classList.add('is-correct');
@@ -677,14 +820,17 @@
                 }
             }
 
+            // 不正解時は復習しやすいように日本語訳を自動表示
             if (!isCorrect) {
                 setJapaneseVisibility(true);
             }
 
             elems.score.textContent = `正解: ${score}`;
 
+            // 正解時は0.7秒、不正解時は2秒後に自動で次の問題へ
             const delayMs = isCorrect ? 700 : 2000;
             setTimeout(() => {
+                stopSpeech(); // 次の問題・結果画面へ移る際に即座に読み上げ停止
                 currentQuestionIndex++;
                 if (currentQuestionIndex < QUESTIONS_PER_GAME) {
                     loadQuestion();
@@ -694,7 +840,9 @@
             }, delayMs);
         }
 
+        // ==================== 結果画面・振り返りリスト ====================
         function showResult() {
+            stopSpeech();
             showScreen('result');
 
             elems.finalScore.textContent = `${score} / ${QUESTIONS_PER_GAME}`;
@@ -707,6 +855,7 @@
             else message = 'Keep trying! もう一度チャレンジ！';
             elems.resultMessage.textContent = message;
 
+            // ランキング保存＆表示
             const { isNewRecord, newEntryId } = recordResult(score, elapsedSeconds);
             if (isNewRecord) {
                 elems.newRecordBadge.classList.remove('hidden');
@@ -714,17 +863,138 @@
                 elems.newRecordBadge.classList.add('hidden');
             }
             renderRanking(elems.resultRankingList, isNewRecord ? newEntryId : null);
+
+            // フィルターボタンの件数更新＆振り返りリスト描画
+            const wrongCount = answerHistory.filter(item => !item.isCorrect).length;
+            elems.filterAllBtn.textContent = `すべて (${answerHistory.length})`;
+            elems.filterWrongBtn.textContent = `間違えた問題のみ (${wrongCount})`;
+            setReviewFilter('all');
+        }
+
+        function setReviewFilter(mode) {
+            reviewFilter = mode;
+            if (mode === 'all') {
+                elems.filterAllBtn.classList.add('active');
+                elems.filterWrongBtn.classList.remove('active');
+            } else {
+                elems.filterAllBtn.classList.remove('active');
+                elems.filterWrongBtn.classList.add('active');
+            }
+            renderReviewList();
+        }
+
+        function renderReviewList() {
+            const items = reviewFilter === 'wrong'
+                ? answerHistory.filter(item => !item.isCorrect)
+                : answerHistory;
+
+            if (items.length === 0) {
+                elems.reviewList.innerHTML = `
+                    <div class="card-surface rounded-2xl p-6 text-center text-sub font-bold">
+                        🎉 間違えた問題はありません！全問正解おめでとうございます！
+                    </div>
+                `;
+                return;
+            }
+
+            elems.reviewList.innerHTML = '';
+
+            items.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'card-surface rounded-2xl p-4 shadow-sm space-y-2.5';
+
+                // バッジスタイル
+                const badgeStyle = item.isCorrect
+                    ? 'background-color: var(--correct-bg); color: var(--correct-text); border: 1px solid var(--correct-border);'
+                    : 'background-color: var(--wrong-bg); color: var(--wrong-text); border: 1px solid var(--wrong-border);';
+                const badgeText = item.isCorrect ? '○ 正解' : '× 不正解';
+
+                // 選択肢HTML生成
+                const choicesHtml = item.choices.map(choice => {
+                    const isAns = choice === item.ans;
+                    const isSelected = choice === item.selectedWord;
+
+                    let boxStyle = 'background-color: var(--bg-subtle); border: 1.5px solid var(--border-color); color: var(--text-sub);';
+                    let tagHtml = '';
+
+                    if (isAns && isSelected) {
+                        boxStyle = 'background-color: var(--correct-bg); border: 2px solid var(--correct-border); color: var(--correct-text); font-weight: 800;';
+                        tagHtml = '<span class="text-xs font-extrabold ml-1.5">✓ 正解・あなたの解答</span>';
+                    } else if (isAns) {
+                        boxStyle = 'background-color: var(--correct-bg); border: 2px solid var(--correct-border); color: var(--correct-text); font-weight: 800;';
+                        tagHtml = '<span class="text-xs font-extrabold ml-1.5">✓ 正解</span>';
+                    } else if (isSelected) {
+                        boxStyle = 'background-color: var(--wrong-bg); border: 2px solid var(--wrong-border); color: var(--wrong-text); font-weight: 800;';
+                        tagHtml = '<span class="text-xs font-extrabold ml-1.5">✗ あなたの解答</span>';
+                    }
+
+                    return `
+                        <div class="px-3 py-2 rounded-xl text-sm sm:text-base flex flex-wrap items-center justify-between gap-1" style="${boxStyle}">
+                            <span class="break-all">${choice}</span>
+                            ${tagHtml}
+                        </div>
+                    `;
+                }).join('');
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between gap-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-sm sm:text-base font-extrabold text-muted">Q${item.questionNumber}</span>
+                            <span class="px-2.5 py-0.5 rounded-full text-xs sm:text-sm font-extrabold" style="${badgeStyle}">${badgeText}</span>
+                        </div>
+                        <button type="button" class="review-speak-btn control-btn w-9 h-9 rounded-full flex items-center justify-center text-sm" title="正解入りの英文を読み上げる" aria-label="正解入りの英文を読み上げる">
+                            🔊
+                        </button>
+                    </div>
+                    <div class="text-base sm:text-lg font-bold leading-relaxed">
+                        ${formatFilledEnglish(item.en, item.ans)}
+                    </div>
+                    <div class="text-sm sm:text-base text-sub leading-relaxed">
+                        ${formatJapanese(item.jp)}
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1">
+                        ${choicesHtml}
+                    </div>
+                `;
+
+                // 振り返りカードの読み上げボタン（正解単語が入った完全な英文を読み上げ）
+                const speakBtn = card.querySelector('.review-speak-btn');
+                speakBtn.addEventListener('click', () => {
+                    speakEnglish(getFullEnglishText(item.en, item.ans));
+                });
+
+                elems.reviewList.appendChild(card);
+            });
         }
 
         // ==================== イベントリスナー ====================
-        elems.themeBtn.addEventListener('click', () => applyTheme(currentThemeIndex + 1));
+        elems.themeToggleBtn.addEventListener('click', () => {
+            applyTheme(currentTheme === 'light' ? 'sepia' : 'light');
+        });
+
+        elems.soundToggleBtn.addEventListener('click', () => {
+            applySoundSetting(!isSoundEnabled);
+        });
+
         document.getElementById('start-btn').addEventListener('click', startGame);
         document.getElementById('retry-btn').addEventListener('click', startGame);
+
+        // 英文エリアタップで和訳トグル（🔊ボタン押下時は伝播を止める）
         elems.questionArea.addEventListener('click', toggleJapanese);
+        elems.replaySpeechBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            if (!screens.quiz.classList.contains('hidden-screen') && currentQuestions[currentQuestionIndex]) {
+                speakEnglish(currentQuestions[currentQuestionIndex].en);
+            }
+        });
 
         document.getElementById('reset-ranking-start').addEventListener('click', (e) => handleResetClick(e.currentTarget));
         document.getElementById('reset-ranking-result').addEventListener('click', (e) => handleResetClick(e.currentTarget));
 
+        elems.filterAllBtn.addEventListener('click', () => setReviewFilter('all'));
+        elems.filterWrongBtn.addEventListener('click', () => setReviewFilter('wrong'));
+
+        // キーボード操作（1〜4: 解答 / Space: 日本語訳切替 / R: 再読み上げ / Enter: 開始・リトライ）
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') {
                 if (!screens.start.classList.contains('hidden-screen') || !screens.result.classList.contains('hidden-screen')) {
@@ -741,6 +1011,14 @@
                     return;
                 }
 
+                if (e.key === 'r' || e.key === 'R') {
+                    e.preventDefault();
+                    if (currentQuestions[currentQuestionIndex]) {
+                        speakEnglish(currentQuestions[currentQuestionIndex].en);
+                    }
+                    return;
+                }
+
                 if (!isAnswering) {
                     const keyNum = parseInt(e.key, 10);
                     if (keyNum >= 1 && keyNum <= 4) {
@@ -751,7 +1029,7 @@
         });
 
         // 初期化
-        initTheme();
+        initSettings();
         renderRanking(elems.startRankingList);
     </script>
 </body>
