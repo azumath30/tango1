@@ -215,9 +215,18 @@
             <p>日本語訳：<strong>英文をタップ</strong> または <strong>[Space]</strong> キー ／ 再読み上げ：<strong>[R]</strong> キー</p>
         </div>
 
-        <button id="start-btn" type="button" class="primary-btn w-full max-w-md py-4 text-xl sm:text-3xl font-extrabold rounded-full shadow-md mb-3">
-            スタート (Enter)
-        </button>
+        <div class="w-full max-w-md flex flex-col items-center gap-2.5 mb-3">
+            <button id="start-btn" type="button" class="primary-btn w-full py-4 text-xl sm:text-3xl font-extrabold rounded-full shadow-md">
+                スタート (Enter)
+            </button>
+            <button id="sound-test-btn" type="button" class="control-btn px-5 py-2 rounded-full text-sm sm:text-base font-bold flex items-center justify-center gap-1.5 shadow-sm">
+                <span>🔊</span>
+                <span>音声テスト</span>
+            </button>
+            <p class="text-[11px] sm:text-xs text-muted font-medium">
+                ※iPhoneは消音モード（マナーモード）をオフにしてご利用ください
+            </p>
+        </div>
     </main>
 
     <!-- ==================== クイズ画面（1画面完結・スクロールなし） ==================== -->
@@ -383,8 +392,12 @@
         let currentTheme = 'light';
         let isSoundEnabled = true;
 
-        // Web Audio API コンテキスト
+        // Web Audio API / Web Speech API（iOS Safari 向け管理変数）
         let audioCtx = null;
+        let isAudioUnlocked = false;
+        let currentUtterance = null; // GCによる途中途切れ防止用
+        let cachedEnVoice = null;
+        let speechTimer = null;
 
         // ==================== DOM要素 ====================
         const screens = {
@@ -400,6 +413,8 @@
             themeToggleBtn: document.getElementById('theme-toggle-btn'),
             themeIcon: document.getElementById('theme-icon'),
             themeLabel: document.getElementById('theme-label'),
+            startRankingList: document.getElementById('start-ranking-list'),
+            resultRankingList: document.getElementById('result-ranking-list'),
             progress: document.getElementById('progress-text'),
             timer: document.getElementById('timer-text'),
             score: document.getElementById('score-text'),
@@ -409,21 +424,19 @@
             jpHintGuide: document.getElementById('jp-hint-guide'),
             questionJa: document.getElementById('question-ja'),
             choices: document.getElementById('choices-container'),
+            newRecordBadge: document.getElementById('new-record-badge'),
             finalScore: document.getElementById('final-score'),
             finalTime: document.getElementById('final-time'),
             resultMessage: document.getElementById('result-message'),
-            newRecordBadge: document.getElementById('new-record-badge'),
-            startRankingList: document.getElementById('start-ranking-list'),
-            resultRankingList: document.getElementById('result-ranking-list'),
             filterAllBtn: document.getElementById('filter-all-btn'),
             filterWrongBtn: document.getElementById('filter-wrong-btn'),
             reviewList: document.getElementById('review-list')
         };
 
-        // ==================== テーマ・音声設定の保存と復元 ====================
+        // ==================== 設定（テーマ・音声） ====================
         function applyTheme(theme) {
-            currentTheme = theme;
-            if (theme === 'sepia') {
+            currentTheme = theme === 'sepia' ? 'sepia' : 'light';
+            if (currentTheme === 'sepia') {
                 document.documentElement.setAttribute('data-theme', 'sepia');
                 elems.themeIcon.textContent = '📜';
                 elems.themeLabel.textContent = 'セピア';
@@ -432,12 +445,14 @@
                 elems.themeIcon.textContent = '☀️';
                 elems.themeLabel.textContent = 'ライト';
             }
-            try { localStorage.setItem(THEME_KEY, theme); } catch (e) {}
+            try {
+                localStorage.setItem(THEME_KEY, currentTheme);
+            } catch (e) {}
         }
 
         function applySoundSetting(enabled) {
-            isSoundEnabled = enabled;
-            if (enabled) {
+            isSoundEnabled = Boolean(enabled);
+            if (isSoundEnabled) {
                 elems.soundIcon.textContent = '🔊';
                 elems.soundLabel.textContent = '音声 ON';
             } else {
@@ -445,32 +460,52 @@
                 elems.soundLabel.textContent = '音声 OFF';
                 stopSpeech();
             }
-            try { localStorage.setItem(SOUND_KEY, enabled ? 'on' : 'off'); } catch (e) {}
+            try {
+                localStorage.setItem(SOUND_KEY, isSoundEnabled ? 'on' : 'off');
+            } catch (e) {}
         }
 
         function initSettings() {
+            let savedTheme = 'light';
+            let savedSound = true;
             try {
-                const savedTheme = localStorage.getItem(THEME_KEY);
-                applyTheme(savedTheme === 'sepia' ? 'sepia' : 'light');
-
-                const savedSound = localStorage.getItem(SOUND_KEY);
-                applySoundSetting(savedSound !== 'off');
-            } catch (e) {
-                applyTheme('light');
-                applySoundSetting(true);
-            }
+                const t = localStorage.getItem(THEME_KEY);
+                if (t === 'sepia' || t === 'light') savedTheme = t;
+                const s = localStorage.getItem(SOUND_KEY);
+                if (s === 'off') savedSound = false;
+            } catch (e) {}
+            applyTheme(savedTheme);
+            applySoundSetting(savedSound);
         }
 
-        // ==================== Web Audio API（ピンポン効果音） ====================
-        function initAudioContext() {
+        // ==================== Web Audio API（ピンポン効果音・iOS対応） ====================
+        function getAudioContext() {
+            const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+            if (!AudioContextClass) return null;
+            if (!audioCtx) {
+                audioCtx = new AudioContextClass();
+            }
+            return audioCtx;
+        }
+
+        // ユーザー操作内で同期的に呼び出し、iOSのオーディオロックを確実に解除する
+        function unlockAudio() {
             try {
-                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                if (!AudioContextClass) return;
-                if (!audioCtx) {
-                    audioCtx = new AudioContextClass();
+                const ctx = getAudioContext();
+                if (!ctx) return;
+
+                if (ctx.state === 'suspended') {
+                    ctx.resume();
                 }
-                if (audioCtx.state === 'suspended') {
-                    audioCtx.resume();
+
+                // 1サンプルの無音バッファを再生してロック解除を確実にする
+                if (!isAudioUnlocked || ctx.state !== 'running') {
+                    const buffer = ctx.createBuffer(1, 1, 22050);
+                    const source = ctx.createBufferSource();
+                    source.buffer = buffer;
+                    source.connect(ctx.destination);
+                    source.start(0);
+                    isAudioUnlocked = true;
                 }
             } catch (e) {
                 // 非対応環境では無視
@@ -481,23 +516,30 @@
         function playPinPonSound() {
             if (!isSoundEnabled) return;
             try {
-                initAudioContext();
-                if (!audioCtx) return;
+                const ctx = getAudioContext();
+                if (!ctx) return;
 
-                const now = audioCtx.currentTime;
+                const triggerChime = () => {
+                    const now = ctx.currentTime;
+                    // 1音目：ピン (B5: 987.77 Hz)
+                    playChimeTone(ctx, 987.77, now, 0.16, 0.22);
+                    // 2音目：ポン (G5: 783.99 Hz)
+                    playChimeTone(ctx, 783.99, now + 0.13, 0.42, 0.25);
+                };
 
-                // 1音目：ピン (B5: 987.77 Hz)
-                playChimeTone(987.77, now, 0.16, 0.22);
-                // 2音目：ポン (G5: 783.99 Hz)
-                playChimeTone(783.99, now + 0.13, 0.42, 0.25);
+                if (ctx.state === 'suspended') {
+                    ctx.resume().then(triggerChime).catch(() => {});
+                } else {
+                    triggerChime();
+                }
             } catch (e) {
                 // 再生失敗時は無視
             }
         }
 
-        function playChimeTone(freq, startTime, duration, volume) {
-            const osc = audioCtx.createOscillator();
-            const gain = audioCtx.createGain();
+        function playChimeTone(ctx, freq, startTime, duration, volume) {
+            const osc = ctx.createOscillator();
+            const gain = ctx.createGain();
 
             osc.type = 'sine';
             osc.frequency.setValueAtTime(freq, startTime);
@@ -508,27 +550,59 @@
             gain.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
 
             osc.connect(gain);
-            gain.connect(audioCtx.destination);
+            gain.connect(ctx.destination);
 
             osc.start(startTime);
             osc.stop(startTime + duration + 0.02);
         }
 
-        // ==================== Web Speech API（英文読み上げ） ====================
-        function initSpeechSynthesis() {
-            // iOS Safari 向けにユーザー操作起点で空発話を行いロックを解除
+        // ==================== Web Speech API（英文読み上げ・iOS対応） ====================
+        function loadPreferredEnglishVoice() {
+            if (!('speechSynthesis' in window)) return null;
+            try {
+                const voices = window.speechSynthesis.getVoices();
+                if (!voices || voices.length === 0) return cachedEnVoice;
+                cachedEnVoice =
+                    voices.find(v => v.lang === 'en-US' && v.localService) ||
+                    voices.find(v => v.lang === 'en-US') ||
+                    voices.find(v => v.lang && v.lang.startsWith('en')) ||
+                    null;
+                return cachedEnVoice;
+            } catch (e) {
+                return null;
+            }
+        }
+
+        if ('speechSynthesis' in window) {
+            loadPreferredEnglishVoice();
+            if ('onvoiceschanged' in window.speechSynthesis) {
+                window.speechSynthesis.onvoiceschanged = loadPreferredEnglishVoice;
+            }
+        }
+
+        // ユーザー操作内で同期的に空発話を行い、iOS Safariの音声合成をアンロック
+        function unlockSpeech() {
             if (!('speechSynthesis' in window)) return;
             try {
-                window.speechSynthesis.cancel();
                 const dummy = new SpeechSynthesisUtterance('');
                 dummy.volume = 0;
+                dummy.lang = 'en-US';
+                currentUtterance = dummy;
                 window.speechSynthesis.speak(dummy);
             } catch (e) {}
         }
 
         function stopSpeech() {
+            if (speechTimer) {
+                clearTimeout(speechTimer);
+                speechTimer = null;
+            }
             if ('speechSynthesis' in window) {
-                try { window.speechSynthesis.cancel(); } catch (e) {}
+                try {
+                    if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+                        window.speechSynthesis.cancel();
+                    }
+                } catch (e) {}
             }
         }
 
@@ -536,20 +610,35 @@
             if (!isSoundEnabled) return;
             if (!('speechSynthesis' in window)) return;
             try {
-                window.speechSynthesis.cancel();
+                if (speechTimer) {
+                    clearTimeout(speechTimer);
+                    speechTimer = null;
+                }
+
                 // 空欄 ( ) を "blank" として読み上げる
                 const spokenText = text.replace(/\(\s*\)/g, 'blank');
-                const utterance = new SpeechSynthesisUtterance(spokenText);
-                utterance.lang = 'en-US';
-                utterance.rate = 0.98;
-                utterance.pitch = 1.0;
 
-                // 英語音声が取得できれば優先設定
-                const voices = window.speechSynthesis.getVoices();
-                const enVoice = voices.find(v => v.lang === 'en-US') || voices.find(v => v.lang.startsWith('en'));
-                if (enVoice) utterance.voice = enVoice;
+                const doSpeak = () => {
+                    const utterance = new SpeechSynthesisUtterance(spokenText);
+                    utterance.lang = 'en-US';
+                    utterance.rate = 0.98;
+                    utterance.pitch = 1.0;
 
-                window.speechSynthesis.speak(utterance);
+                    const enVoice = cachedEnVoice || loadPreferredEnglishVoice();
+                    if (enVoice) utterance.voice = enVoice;
+
+                    // GCによる途中途切れ防止のためモジュールスコープ変数に保持
+                    currentUtterance = utterance;
+                    window.speechSynthesis.speak(utterance);
+                };
+
+                // iOS Safari特有の「cancel()直後にspeak()すると無音になるバグ」を回避
+                if (window.speechSynthesis.speaking || window.speechSynthesis.pending) {
+                    window.speechSynthesis.cancel();
+                    speechTimer = setTimeout(doSpeak, 70);
+                } else {
+                    doSpeak();
+                }
             } catch (e) {}
         }
 
@@ -731,9 +820,9 @@
 
         // ==================== ゲーム進行ロジック ====================
         function startGame() {
-            // iOS Safari 対応：ユーザー操作タイミングで AudioContext と SpeechSynthesis を初期化
-            initAudioContext();
-            initSpeechSynthesis();
+            // iOS Safari 対応：ユーザー操作タイミングで AudioContext と SpeechSynthesis を同期アンロック
+            unlockAudio();
+            unlockSpeech();
 
             currentQuestions = shuffleArray(ALL_QUESTIONS).slice(0, QUESTIONS_PER_GAME);
             currentQuestionIndex = 0;
@@ -771,7 +860,11 @@
                     <span class="text-lg sm:text-2xl font-extrabold text-muted mr-3.5 w-6 shrink-0 text-center">${index + 1}</span>
                     <span class="text-xl sm:text-2xl md:text-3xl font-bold break-all">${choiceWord}</span>
                 `;
-                btn.addEventListener('click', () => handleAnswer(index));
+                btn.addEventListener('touchstart', unlockAudio, { passive: true });
+                btn.addEventListener('click', () => {
+                    unlockAudio();
+                    handleAnswer(index);
+                });
                 elems.choices.appendChild(btn);
             });
 
@@ -959,7 +1052,9 @@
 
                 // 振り返りカードの読み上げボタン（正解単語が入った完全な英文を読み上げ）
                 const speakBtn = card.querySelector('.review-speak-btn');
+                speakBtn.addEventListener('touchstart', unlockAudio, { passive: true });
                 speakBtn.addEventListener('click', () => {
+                    unlockAudio();
                     speakEnglish(getFullEnglishText(item.en, item.ans));
                 });
 
@@ -973,16 +1068,39 @@
         });
 
         elems.soundToggleBtn.addEventListener('click', () => {
-            applySoundSetting(!isSoundEnabled);
+            const nextEnabled = !isSoundEnabled;
+            applySoundSetting(nextEnabled);
+            if (nextEnabled) {
+                unlockAudio();
+                unlockSpeech();
+            }
         });
 
+        document.getElementById('start-btn').addEventListener('touchstart', unlockAudio, { passive: true });
         document.getElementById('start-btn').addEventListener('click', startGame);
+        document.getElementById('retry-btn').addEventListener('touchstart', unlockAudio, { passive: true });
         document.getElementById('retry-btn').addEventListener('click', startGame);
+
+        // スタート画面の音声テストボタン（ロック解除＋ピンポン音＋英語読み上げテスト）
+        const soundTestBtn = document.getElementById('sound-test-btn');
+        soundTestBtn.addEventListener('touchstart', unlockAudio, { passive: true });
+        soundTestBtn.addEventListener('click', () => {
+            if (!isSoundEnabled) {
+                applySoundSetting(true);
+            }
+            unlockAudio();
+            unlockSpeech();
+            playPinPonSound();
+            setTimeout(() => {
+                speakEnglish('Ready to start.');
+            }, 350);
+        });
 
         // 英文エリアタップで和訳トグル（🔊ボタン押下時は伝播を止める）
         elems.questionArea.addEventListener('click', toggleJapanese);
         elems.replaySpeechBtn.addEventListener('click', (e) => {
             e.stopPropagation();
+            unlockAudio();
             if (!screens.quiz.classList.contains('hidden-screen') && currentQuestions[currentQuestionIndex]) {
                 speakEnglish(currentQuestions[currentQuestionIndex].en);
             }
